@@ -4,6 +4,8 @@ import { spotify as config } from '../lib/config'
 export const refreshFrequency = config.refreshRate || 15000
 export const command = './bar/scripts/spotify.sh'
 
+const maxStatusLength = config.maxStatusLength || 50
+
 const style = {
   wrapper: {
     ...wrapper,
@@ -23,10 +25,14 @@ const style = {
 export const render = ({ output }) => {
   if (!output.trim()) return ''
 
+  const status = output.length > maxStatusLength
+    ? `${output.substring(0, maxStatusLength)}...`
+    : output
+
   return (
     <span style={style.wrapper}>
       <i className="fab fa-spotify" style={style.icon} />
-      { output }
+      { status }
     </span>
   )
 }
